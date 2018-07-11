@@ -25,7 +25,7 @@ RSpec.describe 'Searching Form for NREL Api' do
       fill_in id: 'q', with: '80203'
       click_button 'Locate'
 
-      expect(page).to have_current_path('/search')
+      expect(current_path).to eq('/search')
     end
   end
 end
