@@ -12,9 +12,17 @@ And for each of the stations I should see Name, Address, Fuel Types, Distance, a
 =end
 
 RSpec.describe 'Searching Form for NREL Api' do
+  let(:stubbed_response) { File.read('spec/fixtures/station_results.json') }
   let(:results_data) { JSON.parse(File.read('spec/fixtures/station_results.json')) }
   let(:stations_data) { results_data['fuel_stations'] }
   let(:fuel_type_names) { Hash.new('ELEC' => 'Electric', 'LPG' => 'Propane') }
+
+  before :each do
+    stub_request(:any, 'https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json')
+      .with(query: { api_key: ENV['NREL_API_KEY'], location: '80203', radius: '6',
+                     fuel_type: 'ELEC,LPG', limit: '10' })
+      .to_return(status: 200, body: stubbed_response)
+  end
   describe 'A user uses the search form' do
     it 'they should see a search form on the root page' do
       visit '/'
