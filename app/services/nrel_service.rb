@@ -9,8 +9,5 @@ class NRELService
                                                                        radius: '6', 
                                                                        fuel_type: 'ELEC,LPG', 
                                                                        limit: '10' }
-    JSON.parse(response.body)['fuel_stations'].map do |station|
-      Station.new(station)
-    end
   end
 end
