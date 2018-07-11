@@ -3,7 +3,7 @@ class NRELService
     @domain = Faraday.new(url: 'https://developer.nrel.gov/')
   end
 
-  def search_stations
+  def nearest_stations
     response = @domain.get '/api/alt-fuel-stations/v1/nearest.json', { api_key: ENV['NREL_API_KEY'],
                                                                        location: '80203', 
                                                                        radius: '6', 

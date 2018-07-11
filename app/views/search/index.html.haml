@@ -1,7 +1,7 @@
 %h1 Search Results
 
 #search-results
--@presenter.stations.each do |station|
+-@presenter.nearest_stations.each do |station|
   %div{id: "station-#{station.id}"}
     %h3= station.name
     %p= "Address: #{station.address}"
