@@ -12,6 +12,9 @@ And for each of the stations I should see Name, Address, Fuel Types, Distance, a
 =end
 
 RSpec.describe 'Searching Form for NREL Api' do
+  let(:results_data) { JSON.parse(File.read('spec/fixtures/station_results.json')) }
+  let(:stations_data) { results_data['fuel_stations'] }
+  let(:fuel_type_names) { Hash.new('ELEC' => 'Electric', 'LPG' => 'Propane') }
   describe 'A user uses the search form' do
     it 'they should see a search form on the root page' do
       visit '/'
@@ -26,6 +29,27 @@ RSpec.describe 'Searching Form for NREL Api' do
       click_button 'Locate'
 
       expect(current_path).to eq('/search')
+    end
+  end
+  
+  describe 'Search results for 10 stations, within 6 miles, sorted by distance ASC, electric and propane only' do
+    it 'they should be taken to a list of 10 stations with Name, Address, Fuel Types, Distance, and Access Times' do
+      visit '/'
+
+      fill_in id: 'q', with: '80203'
+      click_button 'Locate'
+
+      expect(page).to have_content('Search Results')
+
+      stations_data.each do |station|
+        within("#station-#{station['id']}") do
+          expect(page).to have_content(station['station_name'])
+          expect(page).to have_content(station['street_address'])
+          expect(page).to have_content(fuel_type_name[station['fuel_type_code']])
+          expet(page).to have_content(station['distance'])
+          expet(page).to have_content(station['acces_days_time'])
+        end
+      end
     end
   end
 end
