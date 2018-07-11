@@ -15,7 +15,7 @@ RSpec.describe 'Searching Form for NREL Api' do
   let(:stubbed_response) { File.read('spec/fixtures/station_results.json') }
   let(:results_data) { JSON.parse(File.read('spec/fixtures/station_results.json')) }
   let(:stations_data) { results_data['fuel_stations'] }
-  let(:fuel_type_names) { Hash.new('ELEC' => 'Electric', 'LPG' => 'Propane') }
+  # let(:fuel_type_names) { Hash.new'ELEC' => 'Electric', 'LPG' => 'Propane') }
 
   before :each do
     stub_request(:any, 'https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json')
@@ -50,12 +50,15 @@ RSpec.describe 'Searching Form for NREL Api' do
       expect(page).to have_content('Search Results')
 
       stations_data.each do |station|
+        fuel_types = { 'ELEC' => 'Electric', 'LPG' => 'Propane' }
+        fuel_type = fuel_types[station['fuel_type_code']]
+
         within("#station-#{station['id']}") do
           expect(page).to have_content(station['station_name'])
           expect(page).to have_content("Address: #{station['street_address']}")
-          expect(page).to have_content("Fuel Type: #{fuel_type_name[station['fuel_type_code']]}")
-          expet(page).to have_content("Distance: #{station['distance']}")
-          expet(page).to have_content("Open: #{station['access_days_time']}")
+          expect(page).to have_content("Fuel Type: #{fuel_type}")
+          expect(page).to have_content("Distance: #{station['distance']}")
+          expect(page).to have_content("Open: #{station['access_days_time']}")
         end
       end
     end
