@@ -1,6 +1,5 @@
 class SearchController < ApplicationController
-  before_action :create_presenter
-
   def index
+    create_presenter(searcher: SearchResults.new(zip_code: params[:q]))
   end
 end

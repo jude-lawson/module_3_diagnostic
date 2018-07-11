@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  def create_presenter
-    @presenter = Presenter.new
+  def create_presenter(options)
+    @presenter = Presenter.new(options)
   end
 end
