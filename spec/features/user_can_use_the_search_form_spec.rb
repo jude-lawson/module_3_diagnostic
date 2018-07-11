@@ -44,10 +44,10 @@ RSpec.describe 'Searching Form for NREL Api' do
       stations_data.each do |station|
         within("#station-#{station['id']}") do
           expect(page).to have_content(station['station_name'])
-          expect(page).to have_content(station['street_address'])
-          expect(page).to have_content(fuel_type_name[station['fuel_type_code']])
-          expet(page).to have_content(station['distance'])
-          expet(page).to have_content(station['acces_days_time'])
+          expect(page).to have_content("Address: #{station['street_address']}")
+          expect(page).to have_content("Fuel Type: #{fuel_type_name[station['fuel_type_code']]}")
+          expet(page).to have_content("Distance: #{station['distance']}")
+          expet(page).to have_content("Open: #{station['access_days_time']}")
         end
       end
     end
